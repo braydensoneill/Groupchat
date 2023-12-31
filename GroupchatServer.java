@@ -16,8 +16,9 @@ public class GroupchatServer {
                 Socket clientSocket = serverSocket.accept();
 
                 // Print information about the new client
-                System.out.println("New user: " + clientSocket.getInetAddress() + "-" + clientSocket.getPort());
+                System.out.println("New user: " + clientSocket.getPort() + "-" + clientSocket.getInetAddress());
 
+                // Start a thread to handle messages from the client
                 new Thread(() -> handleClient(clientSocket)).start();
             }
         } catch (IOException e) {
@@ -33,8 +34,12 @@ public class GroupchatServer {
             int bytesRead;
 
             while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-                outputStream.flush();
+                String clientMessage = new String(buffer, 0, bytesRead);
+                System.out.println(clientSocket.getInetAddress() + "-" + clientSocket.getPort() + ": " + clientMessage);
+
+                // You can choose not to echo the message back to the client if desired
+                // outputStream.write(buffer, 0, bytesRead);
+                // outputStream.flush();
             }
         } catch (IOException e) {
             e.printStackTrace();
