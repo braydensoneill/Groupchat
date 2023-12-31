@@ -13,17 +13,8 @@ public class GroupchatClient {
              InputStream inputStream = socket.getInputStream();
              OutputStream outputStream = socket.getOutputStream()) {
 
-            String message = "Hello, Server!";
-            byte[] messageBytes = message.getBytes();
-
-            outputStream.write(messageBytes);
-            outputStream.flush();
-
-            byte[] buffer = new byte[1024];
-            int bytesRead = inputStream.read(buffer);
-
-            String echoedMessage = new String(buffer, 0, bytesRead);
-            System.out.println("Received from server: " + echoedMessage);
+            // Print information about the server
+            System.out.println("Connected to server. Server info: " + SERVER_IP + ":" + port);
         } catch (IOException e) {
             e.printStackTrace();
         }

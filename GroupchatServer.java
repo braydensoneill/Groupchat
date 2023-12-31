@@ -14,6 +14,10 @@ public class GroupchatServer {
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
+
+                // Print information about the new client
+                System.out.println("New user: " + clientSocket.getInetAddress() + "-" + clientSocket.getPort());
+
                 new Thread(() -> handleClient(clientSocket)).start();
             }
         } catch (IOException e) {
