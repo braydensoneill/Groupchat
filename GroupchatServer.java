@@ -14,9 +14,7 @@ public class GroupchatServer {
 
     public static void main(String[] args) {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println("'" + GROUPCHAT_NAME + "'" 
-                                + " server started. Listening on port " 
-                                + port);
+            System.out.println("server started. Listening on port " + port);
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
@@ -39,23 +37,23 @@ public class GroupchatServer {
             // Receive the username from the client
             bytesRead = inputStream.read(buffer);
             String username = new String(buffer, 0, bytesRead);
-            System.out.println("User " 
-                                + "'" + username + "'" 
-                                + " connected to " 
-                                + "'" + GROUPCHAT_NAME + "'");
+            System.out.println(username + " has joined the chat!");
+            
+            // Add the username to the list of users
+            GROUPCHAT_USERS.add(username);
 
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 String clientMessage = new String(buffer, 0, bytesRead);
             
                 // Check if the client wants to disconnect
                 if (clientMessage.equals("DISCONNECT")) {
-                    System.out.println("User " + "'" + username + "'" + " disconnected from " + "'" + GROUPCHAT_NAME + "'");
+                    System.out.println(username + " has left the chat!");
                     GROUPCHAT_USERS.remove(username);
                     break;
                 }
             
                 // Print the received message to the console
-                System.out.println("Message from " + "'" + username + "': " + clientMessage);
+                System.out.println("Message received from " + username + ": '" + clientMessage + "'");
             
                 // Broadcast the message to all clients
                 String broadcastMessage = username + ": " + clientMessage;
@@ -84,6 +82,6 @@ public class GroupchatServer {
         // This could involve finding the user's socket and sending the message
         // through the user's output stream.
         // For simplicity, we print the message here.
-        System.out.println(username + ": " + "'" + message + "'");
+        System.out.println("Message sent to " + username + ": " + message + "'");
     }
 }
